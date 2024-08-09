@@ -1,11 +1,14 @@
 ﻿using DAL_BUS.BUS;
 using DAL_BUS.DAL;
+using PRL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,21 +19,21 @@ namespace PRL.Forms
 {
     public partial class Form_BanHang : Form
     {
+        CustomerServives _customerServices;
+        ProductServices _productServices;
         SaleServices _saleServices;
-        ProductServices _productservices;
+        BillServices _billServices;
+        BillDetailsServices _billDetailsService;
+        List<Product> _products;
+        List<Customer> _customers;
         public int currentBillId = -1;
-        public List<Product> _products;
-        public List<Sale> saleproduct;
         public Form_BanHang()
         {
             InitializeComponent();
-            _productservices = new ProductServices();
-            _saleServices = new SaleServices();
-            _products = _productservices.GetProducts();
-            saleproduct = _saleServices.GetAllSale();
+            _productServices = new ProductServices();
         }
 
-        public Panel CreateSP(Product product)
+        public Panel CreateSP(SaleProduct product)
         {
             PictureBox ptb_Img = new PictureBox();
             Label lbName = new Label();
@@ -66,16 +69,16 @@ namespace PRL.Forms
             // lbGia
             // 
             lbGia.AutoSize = true;
-            lbGia.Location = new Point(285, 80);
+            lbGia.Location = new Point(285, 74);
             lbGia.Name = "lbGia";
             lbGia.Size = new Size(95, 32);
             lbGia.TabIndex = 2;
-            lbGia.Text = "Giá bán";
+            lbGia.Text = "Gía bán";
             // 
             // lbSoluong
             // 
             lbSoluong.AutoSize = true;
-            lbSoluong.Location = new Point(285, 173);
+            lbSoluong.Location = new Point(278, 198);
             lbSoluong.Name = "lbSoluong";
             lbSoluong.Size = new Size(156, 32);
             lbSoluong.TabIndex = 3;
@@ -102,20 +105,22 @@ namespace PRL.Forms
             // lbGiaValues
             // 
             lbGiaValues.AutoSize = true;
-            lbGiaValues.Location = new Point(306, 153);
+            lbGiaValues.Location = new Point(306, 166);
             lbGiaValues.Name = "lbGiaValues";
             lbGiaValues.Size = new Size(92, 32);
             lbGiaValues.TabIndex = 2;
             lbGiaValues.Text = product.Price.ToString();
+            lbGiaValues.Font = new Font(lb_Xuatxu.Font, FontStyle.Strikeout);
             // 
             // lbSoluongValues
             // 
             lbSoluongValues.AutoSize = true;
-            lbSoluongValues.Location = new Point(306, 227);
+            lbSoluongValues.Location = new Point(306, 240);
             lbSoluongValues.Name = "lbSoluongValues";
             lbSoluongValues.Size = new Size(92, 32);
             lbSoluongValues.TabIndex = 2;
             lbSoluongValues.Text = product.TotalAmount.ToString();
+
             // 
             // btn_Mua
             // 
@@ -143,6 +148,7 @@ namespace PRL.Forms
             lb_giacu.Size = new Size(92, 32);
             lb_giacu.TabIndex = 2;
             lb_giacu.Text = product.SalePrice.ToString();
+
             // Form_CpnSP
             // 
             Panel pn = new Panel();
@@ -164,123 +170,200 @@ namespace PRL.Forms
 
         private void Form_BanHang_Load(object sender, EventArgs e)
         {
-
             LoadSPToPanel(Convert.ToInt32(lb_page.Text));
+            LoadBill();
         }
 
         private void lb_Back_Click(object sender, EventArgs e)
         {
 
-            if (Convert.ToInt32(lb_page.Text) > 1)
-            { // Nếu trang hiện tại vẫn nhỏ hơn tổ số trang có thể thì ta mới cho Next trang
+            if (Convert.ToInt32(lb_page.Text) >= 2)
+            {
                 lb_page.Text = Convert.ToInt32(lb_page.Text) - 1 + "";
                 LoadSPToPanel(Convert.ToInt32(lb_page.Text));
             }
+
         }
 
         public void LoadSPToPanel(int page)
         {
-            var sales = _saleServices.GetAllSale();
-            var saleProducts =
-                from products in _products
-                join sale in sales
-                on products.SaleID equals sale.Id
-                select new
-                {
-                    Id = products.Id,
-                    Name = products.Name,
-                    Details = products.Details,
-                    ImgURL = products.ImgURL,
-                    From = products.From,
-                    Price = products.Price,
-                    TotalAmount = products.TotalAmount,
-                    Status = products.Status,
-                    SalePrice = Convert.ToInt32(products.Price - products.Price * (sale.Percent / 100)),
-                };
-
             tlp_Product.Controls.Clear();
-            int numberOfPage = (int)Math.Ceiling((decimal)_products.Count / 4);
-            if (page < 1 || page > numberOfPage) return;
-            else
+            _products = _productServices.GetProducts(); // Lấy ra tất cả SP
+            _saleServices = new SaleServices();
+            var sales = _saleServices.GetAllSale();
+            // Join để lấy data
+            var saleProducts =
+                from product in _products
+                join sale in sales
+                on product.SaleID equals sale.Id
+                select new SaleProduct
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Details = product.Details,
+                    ImgURL = product.ImgURL,
+                    From = product.From,
+                    Price = product.Price,
+                    TotalAmount = product.TotalAmount,
+                    Status = product.Status,
+                    SalePrice = Convert.ToInt64(product.Price - product.Price * (sale.Percent / 100))
+                };
+            // Khi có danh sách sản phẩm ta kiểm tra xem page có vi phạm không
+            if (page * 4 - 4 < saleProducts.ToList().Count)
             {
-                if (page * 4 - 4 < _products.Count)
-                {
-                    Panel s1 = CreateSP(_products[page * 4 - 4]);
-                    tlp_Product.Controls.Add(s1, 0, 0);
-                }
-                if (page * 4 - 3 < _products.Count)
-                {
-                    Panel s2 = CreateSP(_products[page * 4 - 3]);
-                    tlp_Product.Controls.Add(s2, 0, 1);
-                }
-                if (page * 4 - 2 < _products.Count)
-                {
-                    Panel s3 = CreateSP(_products[page * 4 - 2]);
-                    tlp_Product.Controls.Add(s3, 1, 0);
-                }
-                if (page * 4 - 1 < _products.Count)
-                {
-                    Panel s4 = CreateSP(_products[page * 4 - 1]);
-                    tlp_Product.Controls.Add(s4, 1, 1);
-                }
+                SaleProduct sp = saleProducts.ToList()[page * 4 - 4];
+                Panel p1 = CreateSP(sp);
+                tlp_Product.Controls.Add(p1, 0, 0);
+            }
+            if (page * 4 - 3 < saleProducts.ToList().Count)
+            {
+                SaleProduct sp = saleProducts.ToList()[page * 4 - 3];
+                Panel p2 = CreateSP(sp);
+                tlp_Product.Controls.Add(p2, 0, 1);
+            }
+            if (page * 4 - 2 < saleProducts.ToList().Count)
+            {
+                SaleProduct sp = saleProducts.ToList()[page * 4 - 2];
+                Panel p3 = CreateSP(sp);
+                tlp_Product.Controls.Add(p3, 1, 0);
+            }
+            if (page * 4 - 1 < saleProducts.ToList().Count)
+            {
+                SaleProduct sp = saleProducts.ToList()[page * 4 - 1];
+                Panel p4 = CreateSP(sp);
+                tlp_Product.Controls.Add(p4, 1, 1);
             }
         }
 
         private void lb_Next_Click(object sender, EventArgs e)
 
         {
-            if (Convert.ToInt32(lb_page.Text) < (int)Math.Ceiling((decimal)_products.Count / 4))
-            { // Nếu trang hiện tại vẫn nhỏ hơn tổ số trang có thể thì ta mới cho Next trang
+            var products = _productServices.GetProducts();
+            int count = products.Count;
+            if (Convert.ToInt32(lb_page.Text) < count / 4 && count % 4 == 0
+                || Convert.ToInt32(lb_page.Text) <= count / 4 && count % 4 != 0)
+            {
                 lb_page.Text = Convert.ToInt32(lb_page.Text) + 1 + "";
                 LoadSPToPanel(Convert.ToInt32(lb_page.Text));
             }
         }
 
 
+
         private void BtnMua_MouseClick(object? sender, MouseEventArgs e)
         {
 
-            System.Windows.Forms.Button b = (System.Windows.Forms.Button)sender;
-            Panel p = (Panel)b.Parent;
-            System.Windows.Forms.TextBox t = p.Controls["ttx_Soluongban"] as System.Windows.Forms.TextBox;
 
-            System.Windows.Forms.Label gia = p.Controls["lbGiaValues"] as System.Windows.Forms.Label;
-            // Kiểm tra và chuyển đổi số lượng mua
-            int soluongmua;
+            long price = 0;
+            int amount = 0;
+            // Lấy thông tin của panel chứa SP
+            System.Windows.Forms.Button btnMua = sender as System.Windows.Forms.Button;
+            Panel cpnSP = btnMua.Parent as Panel;
 
-            if (string.IsNullOrWhiteSpace(t.Text) || !int.TryParse(t.Text, out soluongmua))
+            // Lấy danh sách Label trong Panel ra
+            List<Label> labels = new List<Label>();
+            List<System.Windows.Forms.TextBox> textboxs = new List<System.Windows.Forms.TextBox>();
+            foreach (var item in cpnSP.Controls)
             {
-                MessageBox.Show("Chưa nhập số lượng mà bạn muốn mua hoặc số lượng không hợp lệ.");
-                return; // Ngừng thực hiện nếu không hợp lệ
+                if (item is Label) labels.Add(item as Label);
+                if (item is System.Windows.Forms.TextBox) textboxs.Add(item as System.Windows.Forms.TextBox);
+            }
+            foreach (var item in labels)
+            {
+                if (item.Name == "lb_giacu")
+                {
+                    price = Convert.ToInt64(item.Text); break;
+                }
+            }
+            foreach (var item in textboxs)
+            {
+                if (item.Name == "ttx_Soluongban")
+                {
+                    amount = Convert.ToInt32(item.Text); break;
+                }
             }
 
-            System.Windows.Forms.Label soluongLabel = p.Controls["lbSoluongValues"] as System.Windows.Forms.Label;
-            int soluongcon;
 
-            // Kiểm tra và chuyển đổi số lượng còn lại
-            if (!int.TryParse(soluongLabel.Text, out soluongcon))
-            {
-                MessageBox.Show("Số lượng còn lại không hợp lệ.");
-                return; // Ngừng thực hiện nếu không hợp lệ
-            }
-            int giaban = Convert.ToInt32(gia.Text);
-            // So sánh số lượng mua và số lượng còn lại
-            if (soluongmua > soluongcon)
-            {
-                MessageBox.Show($"Không thể mua {soluongmua} sản phẩm, chỉ còn {soluongcon} sản phẩm.");
-            }
-            else if (currentBillId == -1) MessageBox.Show("Bạn chưa chọn hóa đơn để mua");
-            else
-            {
-                MessageBox.Show($"Bạn vừa chọn mua sản phẩm có id là: {p.Name}. Với số lượng là: {t.Text} Vào hóa đơn {currentBillId}");
-                int Idhd = currentBillId;
-                int Idsp = Convert.ToInt32(p.Name);
-                int Soluong = soluongmua;
-                int Gia = giaban;
-                int Trangthai = 1;
+            // Lấy các thuộc tính vần thiết
+            Guid productId = Guid.Parse(cpnSP.Name);
+            Guid billId = Guid.Parse(lb_MaHD.Text);
+            _billDetailsService = new BillDetailsServices();
+            _billDetailsService.AddToBill(billId, productId, price, amount);
+            LoadBillDetails(Guid.Parse(lb_MaHD.Text));
 
+        }
 
+        public void LoadBillDetails(Guid billId)
+        {
+            _billDetailsService = new BillDetailsServices();
+            var billDetails = _billDetailsService.GetAllByBillId(billId);
+            dgv_HDCT.DataSource = null;
+            dgv_HDCT.DataSource = billDetails;
+        }
+
+        private void cbbsdt_TextChanged(object sender, EventArgs e)
+        {
+            int index = cbb_Phone.SelectedIndex;
+            txtName.Text = _customers[index].Name + "-" + _customers[index].PhoneNumber;
+        }
+
+        private void txt_Phone_TextChanged(object sender, EventArgs e)
+        {
+            cbb_Phone.Items.Clear();
+            _customerServices = new CustomerServives();
+            string searchPhone = txt_Phone.Text;
+            _customers = _customerServices.GetByPhone(searchPhone); // tìm kiếm và hiện ra khi cần
+            foreach (var item in _customers)
+            {
+                cbb_Phone.Items.Add(item.Name);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_CreateBill_Click(object sender, EventArgs e)
+        {
+            string accountId = "";
+            var formMain = this.Parent.Parent as Form; // Lấy từ form Cha là form Main
+            // this là formBanHang cho nên Parent của nó là Panel, Parent của panel mới là form Main
+            List<Label> labels = new List<Label>();
+            foreach (var item in formMain.Controls)
+            {
+                if (item is Label) labels.Add((Label)item);
+            }
+            // Lấy hết label từ form cha
+            foreach (var item in labels)
+            {
+                if (item.Name == "lb_Account")
+                {
+                    accountId = item.Text; break; 
+                }
+            } // từ các label mình lấy ra label nào có tên là Account ID để thông qua đó lấy ID
+            _billServices = new BillServices();
+            _billServices.Create(accountId, cbb_Phone.Text);
+            LoadBill();
+        }
+        public void LoadBill()
+        {
+            dgv_HD.DataSource = null;
+            _billServices = new BillServices();
+            var bills = _billServices.GetWaitBill();
+            dgv_HD.DataSource = bills;
+        }
+
+        private void dgv_HD_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow row = dgv_HD.Rows[e.RowIndex];
+            lb_MaHD.Text = row.Cells[0].Value.ToString();
+            LoadBillDetails(Guid.Parse(row.Cells[0].Value.ToString()));
+        }
+
+        private void btn_ThanhToan_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

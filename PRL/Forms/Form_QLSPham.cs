@@ -20,7 +20,7 @@ namespace PRL.Forms
         SaleServices _saleServices;
         ProductServices _services;
         List<Sale> activeSales;
-       
+
         public Form_QLSPham()
         {
             InitializeComponent();
@@ -70,7 +70,7 @@ namespace PRL.Forms
                 TotalAmount = Convert.ToInt32(txt_SoLuongCon.Text),
                 Status = cbb_Status.SelectedIndex,
                 ImgURL = ptb_Image.ImageLocation,
-                SaleID = activeSales[cbb_Sale.SelectedIndex].Id 
+                SaleID = activeSales[cbb_Sale.SelectedIndex].Id
             };
 
             string newProductName = txt_Ten.Text; // Lấy tên sản phẩm từ TextBox
@@ -82,15 +82,7 @@ namespace PRL.Forms
             }
             else
             {
-                try
-                {
-                    // Mã lưu dữ liệu vào cơ sở dữ liệu
-                    _services.CreateProduct(product);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Lỗi: {ex.Message}\n{ex.InnerException?.Message}");
-                }
+                MessageBox.Show(_services.CreateProduct(product));
                 LoadDataToGridView();
                 ClearData();
             }
@@ -150,6 +142,7 @@ namespace PRL.Forms
 
                     // Chuyển đổi giá trị cho ComboBox
                     cbb_Status.SelectedIndex = Convert.ToInt32(row.Cells[7].Value);
+                    //cbb_Sale.SelectedIndex = Convert.ToInt32(row.Cells[8].Value);
                 }
             }
             catch (FormatException ex)
@@ -183,7 +176,7 @@ namespace PRL.Forms
                 long price = long.Parse(txt_Price.Text);
                 int totalamount = Convert.ToInt32(txt_SoLuongCon.Text);
                 int status = cbb_Status.SelectedIndex;
-                //Guid saleId = ;
+               // Guid saleId = Guid.Parse(cbb_Sale.SelectedIndex.ToString()) ;
                 Product product = new Product()
                 {
                     Id = id,

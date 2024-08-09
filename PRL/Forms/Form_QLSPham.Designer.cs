@@ -216,7 +216,9 @@
             // txt_Id
             // 
             txt_Id.Location = new Point(335, 12);
+            txt_Id.Multiline = true;
             txt_Id.Name = "txt_Id";
+            txt_Id.ReadOnly = true;
             txt_Id.Size = new Size(496, 39);
             txt_Id.TabIndex = 46;
             // 

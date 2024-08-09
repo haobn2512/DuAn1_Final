@@ -17,6 +17,6 @@ namespace PRL.ViewModels
         public long Price { get; set; }
         public int TotalAmount { get; set; }//số lượng còn or số lượng tồn
         public int Status { get; set; }
-        public Guid? SalePrice { get; set; }
+        public long SalePrice { get; set; }
     }
 }

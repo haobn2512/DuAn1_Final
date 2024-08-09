@@ -4,6 +4,7 @@ using DAL_BUS.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL_BUS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240808081449_okela")]
+    partial class okela
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,6 +68,7 @@ namespace DAL_BUS.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("VoucherID")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -115,7 +118,7 @@ namespace DAL_BUS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Point")
+                    b.Property<int>("Point")
                         .HasColumnType("int");
 
                     b.HasKey("PhoneNumber");
@@ -197,6 +200,9 @@ namespace DAL_BUS.Migrations
 
                     b.Property<Guid?>("SaleID")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<long?>("SalePrice")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -286,7 +292,9 @@ namespace DAL_BUS.Migrations
 
                     b.HasOne("DAL_BUS.DAL.Voucher", "Voucher")
                         .WithMany("Bills")
-                        .HasForeignKey("VoucherID");
+                        .HasForeignKey("VoucherID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Account");
 

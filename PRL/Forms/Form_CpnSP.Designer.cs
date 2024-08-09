@@ -62,7 +62,7 @@
             // lbGia
             // 
             lbGia.AutoSize = true;
-            lbGia.Location = new Point(285, 80);
+            lbGia.Location = new Point(285, 74);
             lbGia.Name = "lbGia";
             lbGia.Size = new Size(95, 32);
             lbGia.TabIndex = 2;
@@ -71,7 +71,7 @@
             // lbSoluong
             // 
             lbSoluong.AutoSize = true;
-            lbSoluong.Location = new Point(278, 185);
+            lbSoluong.Location = new Point(278, 198);
             lbSoluong.Name = "lbSoluong";
             lbSoluong.Size = new Size(156, 32);
             lbSoluong.TabIndex = 3;
@@ -98,7 +98,7 @@
             // lbGiaValues
             // 
             lbGiaValues.AutoSize = true;
-            lbGiaValues.Location = new Point(306, 153);
+            lbGiaValues.Location = new Point(306, 166);
             lbGiaValues.Name = "lbGiaValues";
             lbGiaValues.Size = new Size(92, 32);
             lbGiaValues.TabIndex = 2;
@@ -107,7 +107,7 @@
             // lbSoluongValues
             // 
             lbSoluongValues.AutoSize = true;
-            lbSoluongValues.Location = new Point(306, 227);
+            lbSoluongValues.Location = new Point(306, 240);
             lbSoluongValues.Name = "lbSoluongValues";
             lbSoluongValues.Size = new Size(92, 32);
             lbSoluongValues.TabIndex = 2;

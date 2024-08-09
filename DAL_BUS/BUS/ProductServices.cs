@@ -27,26 +27,28 @@ namespace DAL_BUS.BUS
         {//Validate
             if (product.Name.Trim() == "" || product.Details.Trim() == "" || product.From.Trim() == "")
             {
-                return "Kiểm tra lại dữ liệu không được để trống";
+                return "Hãy kiểm tra lại dữ liệu không được trống";
             }
             else if (product.Price < 0 || product.TotalAmount < 0)
             {
-                return "Gía hoặc số lượng không thể là giá trị âm";
+                return "Giá hoặc số lượng không thể là giá trị âm";
             }
             else if (string.IsNullOrEmpty(product.ImgURL))
             {
                 return "Đường dẫn ảnh đang trống";
             }
-            try
+            else
             {
-                _context.Products.Add(product);
-                _context.SaveChanges();
-                return "Tạo thành công";
-            }
-            catch (Exception e)
-            {
-
-                return "Tạo thất bại" + e.Message;
+                try
+                {
+                    _context.Products.Add(product);
+                    _context.SaveChanges();
+                    return "Thêm mới sản phẩm thành công";
+                }
+                catch (Exception e)
+                {
+                    return "Thêm thất bại " + e.Message;
+                }
             }
         }
 

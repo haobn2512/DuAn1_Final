@@ -16,12 +16,11 @@ namespace DAL_BUS.DAL
         public string AccountID { get; set; }
         public string CustomerPhone { get; set; }
         public DateTime CreateDate { get; set; }
-        public string VoucherID { get; set; }
-        //Navigation
+        public string? VoucherID { get; set; }
+        // Navigation
         public virtual List<BillDetails> Details { get; set; }
         public virtual Account Account { get; set; }
-
-        public virtual PayHistory PayHistorys { get; set; }
+        public virtual List<PayHistory> PayHistorys { get; set; }
         public virtual Voucher Voucher { get; set; }
     }
 }

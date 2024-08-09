@@ -19,7 +19,7 @@ namespace DAL_BUS.DAL
         public int TotalAmount { get; set; }//số lượng còn or số lượng tồn
         public int Status { get; set; }
         public Guid? SaleID { get; set; }
-        public long? SalePrice { get; set; }
+        
         //Navigation
         public virtual List<BillDetails> BillDetails { get; set; }
         public virtual Sale Sale { get; set; }

@@ -33,20 +33,23 @@
             lb_page = new Label();
             lb_Next = new Label();
             label1 = new Label();
-            dgv_HoaDon = new DataGridView();
-            dgv_HoaDonChiTiet = new DataGridView();
+            dgv_HD = new DataGridView();
+            dgv_HDCT = new DataGridView();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
-            lb_MaHd = new Label();
+            lb_MaHD = new Label();
             lb_TongTien = new Label();
             cbbvoucher = new ComboBox();
-            cbbsdt = new ComboBox();
-            lb_TenKh = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgv_HoaDon).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgv_HoaDonChiTiet).BeginInit();
+            cbb_Phone = new ComboBox();
+            txt_Phone = new TextBox();
+            txtName = new TextBox();
+            btn_CreateBill = new Button();
+            btn_ThanhToan = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgv_HD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_HDCT).BeginInit();
             SuspendLayout();
             // 
             // tlp_Product
@@ -77,7 +80,7 @@
             // 
             lb_page.AutoSize = true;
             lb_page.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lb_page.Location = new Point(540, 1071);
+            lb_page.Location = new Point(544, 1071);
             lb_page.Name = "lb_page";
             lb_page.Size = new Size(28, 32);
             lb_page.TabIndex = 2;
@@ -103,25 +106,26 @@
             label1.TabIndex = 4;
             label1.Text = "Danh sách sản phẩm trong hóa đơn";
             // 
-            // dgv_HoaDon
+            // dgv_HD
             // 
-            dgv_HoaDon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_HoaDon.Location = new Point(1112, 275);
-            dgv_HoaDon.Name = "dgv_HoaDon";
-            dgv_HoaDon.RowHeadersWidth = 82;
-            dgv_HoaDon.RowTemplate.Height = 41;
-            dgv_HoaDon.Size = new Size(1010, 261);
-            dgv_HoaDon.TabIndex = 5;
+            dgv_HD.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_HD.Location = new Point(1112, 275);
+            dgv_HD.Name = "dgv_HD";
+            dgv_HD.RowHeadersWidth = 82;
+            dgv_HD.RowTemplate.Height = 41;
+            dgv_HD.Size = new Size(1010, 261);
+            dgv_HD.TabIndex = 5;
+            dgv_HD.CellClick += dgv_HD_CellClick;
             // 
-            // dgv_HoaDonChiTiet
+            // dgv_HDCT
             // 
-            dgv_HoaDonChiTiet.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_HoaDonChiTiet.Location = new Point(1121, 624);
-            dgv_HoaDonChiTiet.Name = "dgv_HoaDonChiTiet";
-            dgv_HoaDonChiTiet.RowHeadersWidth = 82;
-            dgv_HoaDonChiTiet.RowTemplate.Height = 41;
-            dgv_HoaDonChiTiet.Size = new Size(1020, 415);
-            dgv_HoaDonChiTiet.TabIndex = 6;
+            dgv_HDCT.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_HDCT.Location = new Point(1121, 624);
+            dgv_HDCT.Name = "dgv_HDCT";
+            dgv_HDCT.RowHeadersWidth = 82;
+            dgv_HDCT.RowTemplate.Height = 41;
+            dgv_HDCT.Size = new Size(1020, 415);
+            dgv_HDCT.TabIndex = 6;
             // 
             // label2
             // 
@@ -168,14 +172,14 @@
             label6.TabIndex = 11;
             label6.Text = "Tổng tiền";
             // 
-            // lb_MaHd
+            // lb_MaHD
             // 
-            lb_MaHd.AutoSize = true;
-            lb_MaHd.Location = new Point(1430, 16);
-            lb_MaHd.Name = "lb_MaHd";
-            lb_MaHd.Size = new Size(61, 32);
-            lb_MaHd.TabIndex = 12;
-            lb_MaHd.Text = "HDX";
+            lb_MaHD.AutoSize = true;
+            lb_MaHD.Location = new Point(1430, 16);
+            lb_MaHD.Name = "lb_MaHD";
+            lb_MaHD.Size = new Size(61, 32);
+            lb_MaHD.TabIndex = 12;
+            lb_MaHD.Text = "HDX";
             // 
             // lb_TongTien
             // 
@@ -189,45 +193,77 @@
             // cbbvoucher
             // 
             cbbvoucher.FormattingEnabled = true;
-            cbbvoucher.Location = new Point(1424, 160);
+            cbbvoucher.Location = new Point(1412, 165);
             cbbvoucher.Name = "cbbvoucher";
             cbbvoucher.Size = new Size(453, 40);
             cbbvoucher.TabIndex = 16;
             // 
-            // cbbsdt
+            // cbb_Phone
             // 
-            cbbsdt.FormattingEnabled = true;
-            cbbsdt.Location = new Point(1427, 67);
-            cbbsdt.Name = "cbbsdt";
-            cbbsdt.Size = new Size(450, 40);
-            cbbsdt.TabIndex = 15;
+            cbb_Phone.FormattingEnabled = true;
+            cbb_Phone.Location = new Point(1784, 64);
+            cbb_Phone.Name = "cbb_Phone";
+            cbb_Phone.Size = new Size(324, 40);
+            cbb_Phone.TabIndex = 15;
+            cbb_Phone.SelectedIndexChanged += lb_Next_Click;
+            cbb_Phone.TextChanged += cbbsdt_TextChanged;
             // 
-            // lb_TenKh
+            // txt_Phone
             // 
-            lb_TenKh.AutoSize = true;
-            lb_TenKh.Location = new Point(1418, 122);
-            lb_TenKh.Name = "lb_TenKh";
-            lb_TenKh.Size = new Size(156, 32);
-            lb_TenKh.TabIndex = 13;
-            lb_TenKh.Text = "Lê Văn Khách";
+            txt_Phone.Location = new Point(1412, 64);
+            txt_Phone.Name = "txt_Phone";
+            txt_Phone.Size = new Size(335, 39);
+            txt_Phone.TabIndex = 17;
+            txt_Phone.TextChanged += txt_Phone_TextChanged;
+            // 
+            // txtName
+            // 
+            txtName.Location = new Point(1412, 109);
+            txtName.Name = "txtName";
+            txtName.Size = new Size(335, 39);
+            txtName.TabIndex = 18;
+            // 
+            // btn_CreateBill
+            // 
+            btn_CreateBill.BackColor = Color.FromArgb(224, 224, 224);
+            btn_CreateBill.Location = new Point(1837, 12);
+            btn_CreateBill.Name = "btn_CreateBill";
+            btn_CreateBill.Size = new Size(271, 46);
+            btn_CreateBill.TabIndex = 19;
+            btn_CreateBill.Text = "Thêm mới 1 hóa đơn";
+            btn_CreateBill.UseVisualStyleBackColor = false;
+            btn_CreateBill.Click += btn_CreateBill_Click;
+            // 
+            // btn_ThanhToan
+            // 
+            btn_ThanhToan.Location = new Point(1789, 568);
+            btn_ThanhToan.Name = "btn_ThanhToan";
+            btn_ThanhToan.Size = new Size(333, 46);
+            btn_ThanhToan.TabIndex = 20;
+            btn_ThanhToan.Text = "Thanh toán";
+            btn_ThanhToan.UseVisualStyleBackColor = true;
+            btn_ThanhToan.Click += btn_ThanhToan_Click;
             // 
             // Form_BanHang
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2174, 1129);
+            Controls.Add(btn_ThanhToan);
+            Controls.Add(btn_CreateBill);
+            Controls.Add(txtName);
+            Controls.Add(txt_Phone);
             Controls.Add(cbbvoucher);
-            Controls.Add(cbbsdt);
+            Controls.Add(cbb_Phone);
             Controls.Add(lb_TongTien);
-            Controls.Add(lb_TenKh);
-            Controls.Add(lb_MaHd);
+            Controls.Add(lb_MaHD);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(dgv_HoaDonChiTiet);
-            Controls.Add(dgv_HoaDon);
+            Controls.Add(dgv_HDCT);
+            Controls.Add(dgv_HD);
             Controls.Add(label1);
             Controls.Add(lb_Next);
             Controls.Add(lb_page);
@@ -236,8 +272,8 @@
             Name = "Form_BanHang";
             Text = "Form_BanHang";
             Load += Form_BanHang_Load;
-            ((System.ComponentModel.ISupportInitialize)dgv_HoaDon).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgv_HoaDonChiTiet).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_HD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_HDCT).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -249,17 +285,20 @@
         private Label lb_page;
         private Label lb_Next;
         private Label label1;
-        private DataGridView dgv_HoaDon;
-        private DataGridView dgv_HoaDonChiTiet;
+        private DataGridView dgv_HD;
+        private DataGridView dgv_HDCT;
         private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;
         private Label label6;
-        private Label lb_MaHd;
+        private Label lb_MaHD;
         private Label lb_TongTien;
         private ComboBox cbbvoucher;
-        private ComboBox cbbsdt;
-        private Label lb_TenKh;
+        private ComboBox cbb_Phone;
+        private TextBox txt_Phone;
+        private TextBox txtName;
+        private Button btn_CreateBill;
+        private Button btn_ThanhToan;
     }
 }

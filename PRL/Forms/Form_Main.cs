@@ -30,7 +30,7 @@ namespace PRL.Forms
         {
             btn_DangNhap.Enabled = false;
             string[] infor = accountInfo.Split(':');
-            lb_Account.Text = "XinChao" + " " + infor[1];
+            lb_Account.Text =  infor[1];
             if (infor[0] == "2")
             {
                 btn_qlnv.Enabled = false;
@@ -131,6 +131,16 @@ namespace PRL.Forms
             {
                 MessageBox.Show("Không thể mở file PDF: " + ex.Message);
             }
+        }
+
+        private void kháchHàngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pn_MainProgram.Controls.Clear();
+            Form_Customer form_Cus = new Form_Customer();
+            form_Cus.TopLevel = false;
+            pn_MainProgram.Controls.Add(form_Cus);
+            form_Cus.FormBorderStyle = FormBorderStyle.None;
+            form_Cus.Show();
         }
     }
 }
