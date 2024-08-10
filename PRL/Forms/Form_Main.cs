@@ -30,7 +30,7 @@ namespace PRL.Forms
         {
             btn_DangNhap.Enabled = false;
             string[] infor = accountInfo.Split(':');
-            lb_Account.Text =  infor[1];
+            lb_Account.Text = infor[1];
             if (infor[0] == "2")
             {
                 btn_qlnv.Enabled = false;

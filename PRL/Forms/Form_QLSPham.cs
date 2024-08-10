@@ -176,7 +176,7 @@ namespace PRL.Forms
                 long price = long.Parse(txt_Price.Text);
                 int totalamount = Convert.ToInt32(txt_SoLuongCon.Text);
                 int status = cbb_Status.SelectedIndex;
-               // Guid saleId = Guid.Parse(cbb_Sale.SelectedIndex.ToString()) ;
+                // Guid saleId = Guid.Parse(cbb_Sale.SelectedIndex.ToString()) ;
                 Product product = new Product()
                 {
                     Id = id,

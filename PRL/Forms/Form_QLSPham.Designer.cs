@@ -35,7 +35,6 @@
             btn_Xoa = new Button();
             btn_Sua = new Button();
             bt_Them = new Button();
-            dgv_Data = new DataGridView();
             cbb_Status = new ComboBox();
             txt_Price = new TextBox();
             txt_MoTa = new TextBox();
@@ -51,6 +50,7 @@
             btn_Clear = new Button();
             cbb_Sale = new ComboBox();
             label8 = new Label();
+            dgv_Data = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)ptb_Image).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_Data).BeginInit();
             SuspendLayout();
@@ -117,17 +117,6 @@
             bt_Them.Text = "Thêm";
             bt_Them.UseVisualStyleBackColor = true;
             bt_Them.Click += bt_Them_Click;
-            // 
-            // dgv_Data
-            // 
-            dgv_Data.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_Data.Location = new Point(65, 524);
-            dgv_Data.Name = "dgv_Data";
-            dgv_Data.RowHeadersWidth = 82;
-            dgv_Data.RowTemplate.Height = 41;
-            dgv_Data.Size = new Size(1340, 561);
-            dgv_Data.TabIndex = 38;
-            dgv_Data.CellClick += dgv_Data_CellClick;
             // 
             // cbb_Status
             // 
@@ -258,6 +247,17 @@
             label8.TabIndex = 50;
             label8.Text = "SaleID";
             // 
+            // dgv_Data
+            // 
+            dgv_Data.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_Data.Location = new Point(65, 524);
+            dgv_Data.Name = "dgv_Data";
+            dgv_Data.RowHeadersWidth = 82;
+            dgv_Data.RowTemplate.Height = 41;
+            dgv_Data.Size = new Size(1340, 561);
+            dgv_Data.TabIndex = 38;
+            dgv_Data.CellClick += dgv_Data_CellClick;
+            // 
             // Form_QLSPham
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
@@ -304,7 +304,6 @@
         private Button btn_Xoa;
         private Button btn_Sua;
         private Button bt_Them;
-        private DataGridView dgv_Data;
         private ComboBox cbb_Status;
         private TextBox txt_Price;
         private TextBox txt_MoTa;
@@ -320,5 +319,6 @@
         private Button btn_Clear;
         private ComboBox cbb_Sale;
         private Label label8;
+        private DataGridView dgv_Data;
     }
 }

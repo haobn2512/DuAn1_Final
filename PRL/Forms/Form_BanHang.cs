@@ -183,6 +183,8 @@ namespace PRL.Forms
                 cbb_Phone.Items.Add(item.Name);
             }
             timer1.Start();
+
+
         }
 
         private void lb_Back_Click(object sender, EventArgs e)
@@ -312,6 +314,13 @@ namespace PRL.Forms
             var billDetails = _billDetailsService.GetFullBillDetails(billId);
             dgv_HDCT.DataSource = null;
             dgv_HDCT.DataSource = billDetails;
+            AddTotalColumn();
+            dgv_HDCT.Columns[0].Visible = false;
+            dgv_HDCT.Columns[1].Visible = false;
+            dgv_HDCT.Columns[2].Visible = false;
+            dgv_HDCT.Columns[6].Visible = false;
+
+
         }
 
         private void cbbsdt_TextChanged(object sender, EventArgs e)
@@ -365,6 +374,10 @@ namespace PRL.Forms
             _billServices = new BillServices();
             var bills = _billServices.GetWaitBill();
             dgv_HD.DataSource = bills;
+            dgv_HD.Columns[0].Visible = false;
+            dgv_HD.Columns[6].Visible = false;
+            dgv_HD.Columns[7].Visible = false;
+            dgv_HD.Columns[8].Visible = false;
         }
         //public void LoadBillDone()
         //{
@@ -378,17 +391,79 @@ namespace PRL.Forms
             DataGridViewRow row = dgv_HD.Rows[e.RowIndex];
             lb_MaHD.Text = row.Cells[0].Value.ToString();
             LoadBillDetails(Guid.Parse(row.Cells[0].Value.ToString()));
+
+
+            try
+            {
+                // Kiểm tra xem chỉ số hàng có hợp lệ không
+                if (e.RowIndex >= 0 && e.RowIndex < dgv_HD.Rows.Count)
+                {
+
+                    // Cập nhật các điều khiển
+                    lb_MaHD.Text = row.Cells[0].Value?.ToString() ?? string.Empty;
+                    txtName.Text = row.Cells[1].Value?.ToString() ?? string.Empty;
+                    lb_TongTien.Text = row.Cells[3].Value?.ToString() ?? string.Empty;
+
+
+                    // Chuyển đổi giá trị cho ComboBox
+                    // cbb_Phone.SelectedIndex = Convert.ToInt32(row.Cells[7].Value);
+                    //cbb_Sale.SelectedIndex = Convert.ToInt32(row.Cells[8].Value);
+                }
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Lỗi định dạng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void btn_ThanhToan_Click(object sender, EventArgs e)
         {
-            Guid billId = Guid.Parse(lb_MaHD.Text);
-            if (billId != null)
+            //Guid billId = Guid.Parse(lb_MaHD.Text);
+            //if (billId != null)
+            //{
+            //    _billServices.UpdateBill(billId, 1, null);
+            //    MessageBox.Show("Thanh toán thành công");
+            //    LoadBill();
+            //}
+
+            long tongTien;
+            long khachDua;
+
+            // Giả sử bạn đã lấy tổng tiền từ một Label
+            if (!long.TryParse(lb_TongTien.Text, out tongTien))
             {
-                _billServices.UpdateBill(billId, 1, null);
-                MessageBox.Show("Thanh toán thành công");
-                LoadBill();
+                MessageBox.Show("Giá trị tổng tiền không hợp lệ.");
+                return;
             }
+
+            // Lấy giá trị tiền khách đưa từ TextBox
+            if (!long.TryParse(txt_khachdua.Text, out khachDua))
+            {
+                MessageBox.Show("Giá trị khách đưa không hợp lệ.");
+                return;
+            }
+
+            // Tính toán tiền thừa
+            decimal tienThua = khachDua - tongTien;
+
+            // Kiểm tra nếu tiền thừa âm
+            if (tienThua < 0)
+            {
+                MessageBox.Show("Tiền khách đưa không đủ.");
+            }
+            else
+            {
+                // Hiển thị tiền thừa
+                lb_TienThua.Text = tienThua.ToString();
+            }
+            Guid billId = Guid.Parse(lb_MaHD.Text);
+            _billServices.UpdateBill(billId, 1, null);
+             MessageBox.Show("Thanh toán thành công");
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -396,5 +471,34 @@ namespace PRL.Forms
             timer1.Interval = 1000;
             lb_Time.Text = DateTime.Now.ToString();
         }
+
+
+        private void AddTotalColumn()
+        {
+            if (dgv_HDCT.Columns.Contains("TotalPrice"))
+            {
+                dgv_HDCT.Columns.Remove("TotalPrice");
+            }
+
+            DataGridViewTextBoxColumn totalColumn = new DataGridViewTextBoxColumn();
+            totalColumn.HeaderText = "Tổng tiền";
+            totalColumn.Name = "TotalPrice";
+            dgv_HDCT.Columns.Add(totalColumn);
+
+            // Tính tổng tiền cho từng sản phẩm
+            foreach (DataGridViewRow row in dgv_HDCT.Rows)
+            {
+                if (row.Cells["Price"].Value != null && row.Cells["Amount"].Value != null)
+                {
+                    int price = Convert.ToInt32(row.Cells["Price"].Value);
+                    int amount = Convert.ToInt32(row.Cells["Amount"].Value);
+                    int totalPrice = price * amount;
+
+                    // Gán giá trị tổng tiền vào cột mới
+                    row.Cells["TotalPrice"].Value = totalPrice;
+                }
+            }
+        }
+
     }
 }

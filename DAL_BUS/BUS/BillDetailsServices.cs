@@ -84,10 +84,10 @@ namespace DAL_BUS.BUS
                                     ID = p.ID,
                                     ProductID = p.ProductID,
                                     BillID = p.BillID,
+                                    Name = c.Name,
                                     Price = p.Price,
                                     Amount = p.Amount,
                                     Status = c.Status,
-                                    Name = c.Name,
                                 };
             return billDetailsVM.ToList();
         }
@@ -98,10 +98,11 @@ namespace DAL_BUS.BUS
         public Guid ID { get; set; }
         public Guid BillID { get; set; }
         public Guid ProductID { get; set; }
+        public string Name { get; set; }
         public long Price { get; set; }
         public int Amount { get; set; } //số lượng
         public int Status { get; set; }
 
-        public string Name { get; set; }
+     
     }
 }

@@ -39,11 +39,9 @@
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
-            label5 = new Label();
             label6 = new Label();
             lb_MaHD = new Label();
             lb_TongTien = new Label();
-            cbbvoucher = new ComboBox();
             cbb_Phone = new ComboBox();
             txt_Phone = new TextBox();
             txtName = new TextBox();
@@ -51,6 +49,11 @@
             btn_ThanhToan = new Button();
             lb_Time = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
+            label5 = new Label();
+            label7 = new Label();
+            txt_khachdua = new TextBox();
+            lb_TienThua = new Label();
+            btn_Inhd = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_HD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_HDCT).BeginInit();
             SuspendLayout();
@@ -103,7 +106,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(1112, 575);
+            label1.Location = new Point(1117, 284);
             label1.Name = "label1";
             label1.Size = new Size(397, 32);
             label1.TabIndex = 4;
@@ -111,29 +114,31 @@
             // 
             // dgv_HD
             // 
+            dgv_HD.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv_HD.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_HD.Location = new Point(1112, 275);
+            dgv_HD.Location = new Point(1117, 824);
             dgv_HD.Name = "dgv_HD";
             dgv_HD.RowHeadersWidth = 82;
             dgv_HD.RowTemplate.Height = 41;
-            dgv_HD.Size = new Size(1010, 261);
+            dgv_HD.Size = new Size(1193, 335);
             dgv_HD.TabIndex = 5;
             dgv_HD.CellClick += dgv_HD_CellClick;
             // 
             // dgv_HDCT
             // 
+            dgv_HDCT.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv_HDCT.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_HDCT.Location = new Point(1121, 624);
+            dgv_HDCT.Location = new Point(1117, 333);
             dgv_HDCT.Name = "dgv_HDCT";
             dgv_HDCT.RowHeadersWidth = 82;
             dgv_HDCT.RowTemplate.Height = 41;
-            dgv_HDCT.Size = new Size(1020, 415);
+            dgv_HDCT.Size = new Size(1193, 415);
             dgv_HDCT.TabIndex = 6;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(1131, 17);
+            label2.Location = new Point(1140, 16);
             label2.Name = "label2";
             label2.Size = new Size(89, 32);
             label2.TabIndex = 7;
@@ -142,7 +147,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(1134, 71);
+            label3.Location = new Point(1140, 67);
             label3.Name = "label3";
             label3.Size = new Size(188, 32);
             label3.TabIndex = 8;
@@ -157,19 +162,10 @@
             label4.TabIndex = 9;
             label4.Text = "Tên khách hàng";
             // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(1134, 173);
-            label5.Name = "label5";
-            label5.Size = new Size(101, 32);
-            label5.TabIndex = 10;
-            label5.Text = "Voucher";
-            // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(1134, 229);
+            label6.Location = new Point(1147, 230);
             label6.Name = "label6";
             label6.Size = new Size(117, 32);
             label6.TabIndex = 11;
@@ -187,51 +183,43 @@
             // lb_TongTien
             // 
             lb_TongTien.AutoSize = true;
-            lb_TongTien.Location = new Point(1430, 216);
+            lb_TongTien.Location = new Point(1275, 230);
             lb_TongTien.Name = "lb_TongTien";
             lb_TongTien.Size = new Size(47, 32);
             lb_TongTien.TabIndex = 14;
             lb_TongTien.Text = "xxx";
             // 
-            // cbbvoucher
-            // 
-            cbbvoucher.FormattingEnabled = true;
-            cbbvoucher.Location = new Point(1412, 165);
-            cbbvoucher.Name = "cbbvoucher";
-            cbbvoucher.Size = new Size(453, 40);
-            cbbvoucher.TabIndex = 16;
-            // 
             // cbb_Phone
             // 
             cbb_Phone.FormattingEnabled = true;
-            cbb_Phone.Location = new Point(1784, 64);
+            cbb_Phone.Location = new Point(1895, 64);
             cbb_Phone.Name = "cbb_Phone";
-            cbb_Phone.Size = new Size(324, 40);
+            cbb_Phone.Size = new Size(415, 40);
             cbb_Phone.TabIndex = 15;
             cbb_Phone.SelectedIndexChanged += lb_Next_Click;
             cbb_Phone.TextChanged += cbbsdt_TextChanged;
             // 
             // txt_Phone
             // 
-            txt_Phone.Location = new Point(1412, 64);
+            txt_Phone.Location = new Point(1349, 64);
             txt_Phone.Name = "txt_Phone";
-            txt_Phone.Size = new Size(335, 39);
+            txt_Phone.Size = new Size(439, 39);
             txt_Phone.TabIndex = 17;
             txt_Phone.TextChanged += txt_Phone_TextChanged;
             // 
             // txtName
             // 
-            txtName.Location = new Point(1412, 109);
+            txtName.Location = new Point(1349, 117);
             txtName.Name = "txtName";
-            txtName.Size = new Size(335, 39);
+            txtName.Size = new Size(439, 39);
             txtName.TabIndex = 18;
             // 
             // btn_CreateBill
             // 
             btn_CreateBill.BackColor = Color.FromArgb(224, 224, 224);
-            btn_CreateBill.Location = new Point(1837, 12);
+            btn_CreateBill.Location = new Point(1867, 772);
             btn_CreateBill.Name = "btn_CreateBill";
-            btn_CreateBill.Size = new Size(271, 46);
+            btn_CreateBill.Size = new Size(443, 46);
             btn_CreateBill.TabIndex = 19;
             btn_CreateBill.Text = "Thêm mới 1 hóa đơn";
             btn_CreateBill.UseVisualStyleBackColor = false;
@@ -239,18 +227,19 @@
             // 
             // btn_ThanhToan
             // 
-            btn_ThanhToan.Location = new Point(1789, 568);
+            btn_ThanhToan.BackColor = Color.FromArgb(224, 224, 224);
+            btn_ThanhToan.Location = new Point(1891, 277);
             btn_ThanhToan.Name = "btn_ThanhToan";
-            btn_ThanhToan.Size = new Size(333, 46);
+            btn_ThanhToan.Size = new Size(400, 46);
             btn_ThanhToan.TabIndex = 20;
             btn_ThanhToan.Text = "Thanh toán";
-            btn_ThanhToan.UseVisualStyleBackColor = true;
+            btn_ThanhToan.UseVisualStyleBackColor = false;
             btn_ThanhToan.Click += btn_ThanhToan_Click;
             // 
             // lb_Time
             // 
             lb_Time.AutoSize = true;
-            lb_Time.Location = new Point(1121, 1088);
+            lb_Time.Location = new Point(850, 1127);
             lb_Time.Name = "lb_Time";
             lb_Time.Size = new Size(71, 32);
             lb_Time.TabIndex = 21;
@@ -260,27 +249,73 @@
             // 
             timer1.Tick += timer1_Tick;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(1140, 179);
+            label5.Name = "label5";
+            label5.Size = new Size(177, 32);
+            label5.TabIndex = 22;
+            label5.Text = "Tiền khách đưa";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(1430, 230);
+            label7.Name = "label7";
+            label7.Size = new Size(115, 32);
+            label7.TabIndex = 23;
+            label7.Text = "Tiền thừa";
+            // 
+            // txt_khachdua
+            // 
+            txt_khachdua.Location = new Point(1349, 172);
+            txt_khachdua.Name = "txt_khachdua";
+            txt_khachdua.Size = new Size(439, 39);
+            txt_khachdua.TabIndex = 24;
+            // 
+            // lb_TienThua
+            // 
+            lb_TienThua.AutoSize = true;
+            lb_TienThua.Location = new Point(1580, 227);
+            lb_TienThua.Name = "lb_TienThua";
+            lb_TienThua.Size = new Size(50, 32);
+            lb_TienThua.TabIndex = 25;
+            lb_TienThua.Text = "yyy";
+            // 
+            // btn_Inhd
+            // 
+            btn_Inhd.Location = new Point(1894, 209);
+            btn_Inhd.Name = "btn_Inhd";
+            btn_Inhd.Size = new Size(150, 46);
+            btn_Inhd.TabIndex = 26;
+            btn_Inhd.Text = "In hóa đơn";
+            btn_Inhd.UseVisualStyleBackColor = true;
+            // 
             // Form_BanHang
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2174, 1129);
+            ClientSize = new Size(2318, 1253);
+            Controls.Add(btn_Inhd);
+            Controls.Add(dgv_HD);
+            Controls.Add(lb_TienThua);
+            Controls.Add(txt_khachdua);
+            Controls.Add(label7);
+            Controls.Add(label5);
             Controls.Add(lb_Time);
             Controls.Add(btn_ThanhToan);
             Controls.Add(btn_CreateBill);
             Controls.Add(txtName);
             Controls.Add(txt_Phone);
-            Controls.Add(cbbvoucher);
             Controls.Add(cbb_Phone);
             Controls.Add(lb_TongTien);
             Controls.Add(lb_MaHD);
             Controls.Add(label6);
-            Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(dgv_HDCT);
-            Controls.Add(dgv_HD);
             Controls.Add(label1);
             Controls.Add(lb_Next);
             Controls.Add(lb_page);
@@ -307,11 +342,9 @@
         private Label label2;
         private Label label3;
         private Label label4;
-        private Label label5;
         private Label label6;
         private Label lb_MaHD;
         private Label lb_TongTien;
-        private ComboBox cbbvoucher;
         private ComboBox cbb_Phone;
         private TextBox txt_Phone;
         private TextBox txtName;
@@ -319,5 +352,10 @@
         private Button btn_ThanhToan;
         private Label lb_Time;
         private System.Windows.Forms.Timer timer1;
+        private Label label5;
+        private Label label7;
+        private TextBox txt_khachdua;
+        private Label lb_TienThua;
+        private Button btn_Inhd;
     }
 }

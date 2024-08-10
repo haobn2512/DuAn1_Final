@@ -11,11 +11,12 @@ namespace DAL_BUS.DAL
     {
         [Key]
         public Guid Id { get; set; }
-        public int Status { get; set; }
-        public long? TotalMoney { get; set; }
-        public string AccountID { get; set; }
         public string CustomerPhone { get; set; }
+        public string AccountID { get; set; }
+        public long? TotalMoney { get; set; }
         public DateTime CreateDate { get; set; }
+
+        public int Status { get; set; }
         public string? VoucherID { get; set; }
         // Navigation
         public virtual List<BillDetails> Details { get; set; }

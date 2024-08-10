@@ -56,14 +56,14 @@
             pn_MainProgram.BackColor = SystemColors.Control;
             pn_MainProgram.Location = new Point(76, 79);
             pn_MainProgram.Name = "pn_MainProgram";
-            pn_MainProgram.Size = new Size(2200, 1200);
+            pn_MainProgram.Size = new Size(2415, 1200);
             pn_MainProgram.TabIndex = 14;
             // 
             // lb_Account
             // 
             lb_Account.AutoSize = true;
             lb_Account.Font = new Font("Segoe UI", 10.125F, FontStyle.Regular, GraphicsUnit.Point);
-            lb_Account.Location = new Point(2123, 28);
+            lb_Account.Location = new Point(2089, 39);
             lb_Account.Name = "lb_Account";
             lb_Account.Size = new Size(35, 37);
             lb_Account.TabIndex = 15;
@@ -75,7 +75,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { hệThốngToolStripMenuItem, danhMụcToolStripMenuItem, btn_ThongKe, hướngDẫnToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(2390, 40);
+            menuStrip1.Size = new Size(2640, 40);
             menuStrip1.TabIndex = 16;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -213,7 +213,7 @@
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2390, 1729);
+            ClientSize = new Size(2640, 1729);
             Controls.Add(menuStrip1);
             Controls.Add(lb_Account);
             Controls.Add(pn_MainProgram);
