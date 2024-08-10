@@ -309,7 +309,7 @@ namespace PRL.Forms
         public void LoadBillDetails(Guid billId)
         {
             _billDetailsService = new BillDetailsServices();
-            var billDetails = _billDetailsService.GetAllByBillId(billId);
+            var billDetails = _billDetailsService.GetFullBillDetails(billId);
             dgv_HDCT.DataSource = null;
             dgv_HDCT.DataSource = billDetails;
         }
@@ -389,7 +389,6 @@ namespace PRL.Forms
                 MessageBox.Show("Thanh toán thành công");
                 LoadBill();
             }
-            dgv_HDCT.DataSource = null;
         }
     }
 }

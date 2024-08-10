@@ -69,6 +69,39 @@ namespace DAL_BUS.BUS
             }
             return sum;
         }
+      
         
+        public List<BillDetailsViewModel> GetFullBillDetails(Guid id) 
+        {
+            List<BillDetails> billDetails = _context.BillDetails.Where(p => p.BillID == id).ToList();
+            List<Product> product = _context.Products.ToList();
+            var billDetailsVM = from p in billDetails
+                                join c in product
+                                on p.ProductID equals c.Id
+                                select
+                                new BillDetailsViewModel
+                                {
+                                    ID = p.ID,
+                                    ProductID = p.ProductID,
+                                    BillID = p.BillID,
+                                    Price = p.Price,
+                                    Amount = p.Amount,
+                                    Status = c.Status,
+                                    Name = c.Name,
+                                };
+            return billDetailsVM.ToList();
+        }
+    }
+
+    public class BillDetailsViewModel
+    {
+        public Guid ID { get; set; }
+        public Guid BillID { get; set; }
+        public Guid ProductID { get; set; }
+        public long Price { get; set; }
+        public int Amount { get; set; } //số lượng
+        public int Status { get; set; }
+
+        public string Name { get; set; }
     }
 }
