@@ -39,5 +39,27 @@ namespace DAL_BUS.BUS
             _context.SaveChanges();
             return "Tạo thành công";
         }
+
+      
+
+        public string UpdateBill (Guid id, int status, long? totalMoney)
+        {
+            try
+            {
+                var hd = _context.Bills.Find(id);
+                hd.Status = status;
+                if (totalMoney != null)
+                {
+                    hd.TotalMoney = totalMoney;
+                }
+              
+                _context.SaveChanges();
+                return "Cập nhật đơn hàng thành công";
+            }
+            catch (Exception)
+            {
+                return "Thất bại";
+            }
+        }
     }
 }

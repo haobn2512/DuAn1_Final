@@ -12,7 +12,7 @@ namespace DAL_BUS.DAL
         [Key]
         public Guid Id { get; set; }
         public int Status { get; set; }
-        public long TotalMoney { get; set; }
+        public long? TotalMoney { get; set; }
         public string AccountID { get; set; }
         public string CustomerPhone { get; set; }
         public DateTime CreateDate { get; set; }

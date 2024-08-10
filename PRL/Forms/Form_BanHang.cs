@@ -1,5 +1,6 @@
 ﻿using DAL_BUS.BUS;
 using DAL_BUS.DAL;
+using Microsoft.EntityFrameworkCore;
 using PRL.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace PRL.Forms
 {
     public partial class Form_BanHang : Form
     {
+        AppDbContext _context;
         CustomerServives _customerServices;
         ProductServices _productServices;
         SaleServices _saleServices;
@@ -26,11 +28,12 @@ namespace PRL.Forms
         BillDetailsServices _billDetailsService;
         List<Product> _products;
         List<Customer> _customers;
-        public int currentBillId = -1;
+        public Guid currentBillId = new Guid();
         public Form_BanHang()
         {
             InitializeComponent();
             _productServices = new ProductServices();
+            _context = new AppDbContext();
         }
 
         public Panel CreateSP(SaleProduct product)
@@ -172,6 +175,14 @@ namespace PRL.Forms
         {
             LoadSPToPanel(Convert.ToInt32(lb_page.Text));
             LoadBill();
+            _customerServices = new CustomerServives();
+            string phone = txt_Phone.Text;
+            var activesales =_customerServices.GetByPhone(phone);
+            foreach (var item in activesales)
+            {
+                cbb_Phone.Items.Add(item.Name);
+            }
+
         }
 
         private void lb_Back_Click(object sender, EventArgs e)
@@ -252,8 +263,6 @@ namespace PRL.Forms
 
         private void BtnMua_MouseClick(object? sender, MouseEventArgs e)
         {
-
-
             long price = 0;
             int amount = 0;
             // Lấy thông tin của panel chứa SP
@@ -282,14 +291,18 @@ namespace PRL.Forms
                     amount = Convert.ToInt32(item.Text); break;
                 }
             }
-
-
             // Lấy các thuộc tính vần thiết
             Guid productId = Guid.Parse(cpnSP.Name);
             Guid billId = Guid.Parse(lb_MaHD.Text);
             _billDetailsService = new BillDetailsServices();
-            _billDetailsService.AddToBill(billId, productId, price, amount);
+            _billDetailsService.AddToBill(billId, productId, amount);
             LoadBillDetails(Guid.Parse(lb_MaHD.Text));
+
+            long totalMoney =_billDetailsService.CalculateBill(billId);
+            // MessageBox.Show("Tổng tiền hóa đơn là: "+ totalMoney.ToString());
+            _billServices =new BillServices();
+            MessageBox.Show(_billServices.UpdateBill(billId, 0, totalMoney));
+            LoadBill();
 
         }
 
@@ -353,7 +366,13 @@ namespace PRL.Forms
             var bills = _billServices.GetWaitBill();
             dgv_HD.DataSource = bills;
         }
-
+        //public void LoadBillDone()
+        //{
+        //    dgv_HD.DataSource = null;
+        //    _billServices = new BillServices();
+        //    var bills = _billServices.GetWaitBill();
+        //    dgv_HD.DataSource = bills;
+        //}
         private void dgv_HD_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow row = dgv_HD.Rows[e.RowIndex];
@@ -363,7 +382,14 @@ namespace PRL.Forms
 
         private void btn_ThanhToan_Click(object sender, EventArgs e)
         {
-
+            Guid billId = Guid.Parse(lb_MaHD.Text);
+            if (billId != null)
+            {
+                _billServices.UpdateBill(billId, 1, null);
+                MessageBox.Show("Thanh toán thành công");
+                LoadBill();
+            }
+            dgv_HDCT.DataSource = null;
         }
     }
 }

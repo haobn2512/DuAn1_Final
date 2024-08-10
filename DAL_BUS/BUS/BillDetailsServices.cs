@@ -20,19 +20,20 @@ namespace DAL_BUS.BUS
             return _context.BillDetails.Where(p => p.BillID == billId).ToList();
 
         }
-        public string AddToBill(Guid billID, Guid productID, long price, int amount)
+        public string AddToBill(Guid billID, Guid productID, int amount)
         {
             // Check xem SP đã nằm trong hóa đơn hay chưa????
             var check = _context.BillDetails.FirstOrDefault(p => p.BillID == billID && p.ProductID == productID);
             // Nếu chưa tồn tại => Tạo mới 1 HDCT
             if (check == null)// SP mới chưa có trong hóa đơn
             {
+                Product sp = _context.Products.Find(productID);
                 BillDetails details = new BillDetails()
                 {
                     ID = Guid.NewGuid(),
                     BillID = billID,
                     ProductID = productID,
-                    Price = price,
+                    Price = sp.Price,
                     Amount = amount
                 };
                 _context.BillDetails.Add(details);
@@ -56,5 +57,18 @@ namespace DAL_BUS.BUS
                 return "Thêm mới và cộng dồn thành công";
             }
         }
+        
+
+        public long CalculateBill(Guid id)
+        {
+            List<BillDetails> billDetails =GetAllByBillId(id); // Lấy tất cả HDCT theo ID
+            long sum = 0;
+            foreach (var item in billDetails)
+            {
+                sum += item.Price * (long)item.Amount;
+            }
+            return sum;
+        }
+        
     }
 }
