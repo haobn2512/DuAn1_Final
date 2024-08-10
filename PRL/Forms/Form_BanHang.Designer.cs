@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             tlp_Product = new TableLayoutPanel();
             lb_Back = new Label();
             lb_page = new Label();
@@ -48,6 +49,8 @@
             txtName = new TextBox();
             btn_CreateBill = new Button();
             btn_ThanhToan = new Button();
+            lb_Time = new Label();
+            timer1 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)dgv_HD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_HDCT).BeginInit();
             SuspendLayout();
@@ -244,11 +247,25 @@
             btn_ThanhToan.UseVisualStyleBackColor = true;
             btn_ThanhToan.Click += btn_ThanhToan_Click;
             // 
+            // lb_Time
+            // 
+            lb_Time.AutoSize = true;
+            lb_Time.Location = new Point(1121, 1088);
+            lb_Time.Name = "lb_Time";
+            lb_Time.Size = new Size(71, 32);
+            lb_Time.TabIndex = 21;
+            lb_Time.Text = "00:00";
+            // 
+            // timer1
+            // 
+            timer1.Tick += timer1_Tick;
+            // 
             // Form_BanHang
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2174, 1129);
+            Controls.Add(lb_Time);
             Controls.Add(btn_ThanhToan);
             Controls.Add(btn_CreateBill);
             Controls.Add(txtName);
@@ -300,5 +317,7 @@
         private TextBox txtName;
         private Button btn_CreateBill;
         private Button btn_ThanhToan;
+        private Label lb_Time;
+        private System.Windows.Forms.Timer timer1;
     }
 }

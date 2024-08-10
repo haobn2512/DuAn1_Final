@@ -177,12 +177,12 @@ namespace PRL.Forms
             LoadBill();
             _customerServices = new CustomerServives();
             string phone = txt_Phone.Text;
-            var activesales =_customerServices.GetByPhone(phone);
+            var activesales = _customerServices.GetByPhone(phone);
             foreach (var item in activesales)
             {
                 cbb_Phone.Items.Add(item.Name);
             }
-
+            timer1.Start();
         }
 
         private void lb_Back_Click(object sender, EventArgs e)
@@ -298,9 +298,9 @@ namespace PRL.Forms
             _billDetailsService.AddToBill(billId, productId, amount);
             LoadBillDetails(Guid.Parse(lb_MaHD.Text));
 
-            long totalMoney =_billDetailsService.CalculateBill(billId);
+            long totalMoney = _billDetailsService.CalculateBill(billId);
             // MessageBox.Show("Tổng tiền hóa đơn là: "+ totalMoney.ToString());
-            _billServices =new BillServices();
+            _billServices = new BillServices();
             MessageBox.Show(_billServices.UpdateBill(billId, 0, totalMoney));
             LoadBill();
 
@@ -352,7 +352,7 @@ namespace PRL.Forms
             {
                 if (item.Name == "lb_Account")
                 {
-                    accountId = item.Text; break; 
+                    accountId = item.Text; break;
                 }
             } // từ các label mình lấy ra label nào có tên là Account ID để thông qua đó lấy ID
             _billServices = new BillServices();
@@ -389,6 +389,12 @@ namespace PRL.Forms
                 MessageBox.Show("Thanh toán thành công");
                 LoadBill();
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Interval = 1000;
+            lb_Time.Text = DateTime.Now.ToString();
         }
     }
 }
