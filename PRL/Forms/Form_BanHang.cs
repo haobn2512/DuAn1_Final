@@ -15,6 +15,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Kernel.Font;
+using System.Drawing.Printing;
 
 namespace PRL.Forms
 {
@@ -463,7 +469,7 @@ namespace PRL.Forms
             }
             Guid billId = Guid.Parse(lb_MaHD.Text);
             _billServices.UpdateBill(billId, 1, null);
-             MessageBox.Show("Thanh toán thành công");
+            MessageBox.Show("Thanh toán thành công");
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -500,5 +506,36 @@ namespace PRL.Forms
             }
         }
 
+        private void btn_Inhd_Click(object sender, EventArgs e)
+        {
+           string customerName = txtName.Text.Replace(" ", "_"); // Thay thế khoảng trắng bằng dấu _
+            string filePath = $@"E:\hoadon_{customerName}_{lb_MaHD.Text}.pdf";
+
+            // Tạo tài liệu PDF
+            using (PdfWriter writer = new PdfWriter(filePath))
+            {
+                using (PdfDocument pdf = new PdfDocument(writer))
+                {
+                    Document document = new Document(pdf);
+
+                    // Thêm tiêu đề
+                    document.Add(new Paragraph("HÓA ĐƠN").SetFontSize(20).SetBold());
+
+                    // Thêm thông tin hóa đơn
+                    document.Add(new Paragraph($"Mã HD: {lb_MaHD.Text}"));
+                    document.Add(new Paragraph($"Tên KH: {txt_khachdua.Text}"));
+                   // document.Add(new Paragraph($"SDT: {txt_Phone.Text}"));
+                    document.Add(new Paragraph($"Tiền khách đưa: {txt_khachdua.Text}"));
+                    document.Add(new Paragraph($"Tổng tiền: {lb_TongTien.Text}"));
+                    document.Add(new Paragraph($"Tiền thừa: {txt_khachdua.Text}"));
+                    // Đóng tài liệu
+                    document.Close();
+                }
+            }
+
+            // Thông báo cho người dùng
+            MessageBox.Show("Hóa đơn đã được lưu thành file PDF tại " + filePath);
+        }
+        
     }
 }

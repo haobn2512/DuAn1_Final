@@ -291,6 +291,7 @@
             btn_Inhd.TabIndex = 26;
             btn_Inhd.Text = "In hóa đơn";
             btn_Inhd.UseVisualStyleBackColor = true;
+            btn_Inhd.Click += btn_Inhd_Click;
             // 
             // Form_BanHang
             // 
