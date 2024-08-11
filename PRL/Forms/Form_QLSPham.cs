@@ -32,7 +32,7 @@ namespace PRL.Forms
 
         private void bt_Them_Click(object sender, EventArgs e)
         {
-
+            
 
             // Kiểm tra các TextBox có giá trị không
             if (string.IsNullOrWhiteSpace(txt_Ten.Text) ||
@@ -66,7 +66,7 @@ namespace PRL.Forms
                 Name = txt_Ten.Text,
                 From = txt_XuatXu.Text,
                 Details = txt_MoTa.Text,
-                Price = Convert.ToInt32(txt_Price.Text),
+                Price = Convert.ToInt64(txt_Price.Text),
                 TotalAmount = Convert.ToInt32(txt_SoLuongCon.Text),
                 Status = cbb_Status.SelectedIndex,
                 ImgURL = ptb_Image.ImageLocation,
@@ -92,7 +92,7 @@ namespace PRL.Forms
         public void LoadDataToGridView()
         {
             dgv_Data.DataSource = null;
-            var products = _services.GetProducts();
+            var products = _services.GetFullProdutc();
             dgv_Data.DataSource = products;
         }
 
@@ -142,7 +142,7 @@ namespace PRL.Forms
 
                     // Chuyển đổi giá trị cho ComboBox
                     cbb_Status.SelectedIndex = Convert.ToInt32(row.Cells[7].Value);
-                    //cbb_Sale.SelectedIndex = Convert.ToInt32(row.Cells[8].Value);
+                    cbb_Sale.SelectedItem = row.Cells["NameID"].Value.ToString();
                 }
             }
             catch (FormatException ex)
@@ -176,8 +176,8 @@ namespace PRL.Forms
                 long price = long.Parse(txt_Price.Text);
                 int totalamount = Convert.ToInt32(txt_SoLuongCon.Text);
                 int status = cbb_Status.SelectedIndex;
-                // Guid saleId = Guid.Parse(cbb_Sale.SelectedIndex.ToString()) ;
-                Product product = new Product()
+                string saleName = (cbb_Sale.SelectedIndex.ToString());
+                ProductViewModel product = new ProductViewModel()
                 {
                     Id = id,
                     Name = name,
@@ -208,6 +208,7 @@ namespace PRL.Forms
             txt_SoLuongCon.Text = "";
             cbb_Status.SelectedIndex = -1;
             ptb_Image.Image = null;
+            cbb_Sale.SelectedIndex = -1;
         }
 
         private void btn_Clear_Click(object sender, EventArgs e)

@@ -120,6 +120,7 @@ namespace PRL.Forms
             lbGiaValues.TabIndex = 2;
             lbGiaValues.Text = product.Price.ToString();
             lbGiaValues.Font = new Font(lb_Xuatxu.Font, FontStyle.Strikeout);
+
             // 
             // lbSoluongValues
             // 
@@ -157,6 +158,7 @@ namespace PRL.Forms
             lb_giacu.Size = new Size(92, 32);
             lb_giacu.TabIndex = 2;
             lb_giacu.Text = product.SalePrice.ToString();
+
 
             // Form_CpnSP
             // 
