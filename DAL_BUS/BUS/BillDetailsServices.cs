@@ -73,25 +73,52 @@ namespace DAL_BUS.BUS
         
         public List<BillDetailsViewModel> GetFullBillDetails(Guid id) 
         {
+            List<Product> products = _context.Products.ToList();
+            List<Sale> sales = _context.Sales.ToList();
             List<BillDetails> billDetails = _context.BillDetails.Where(p => p.BillID == id).ToList();
-            List<Product> product = _context.Products.ToList();
-            var billDetailsVM = from p in billDetails
-                                join c in product
-                                on p.ProductID equals c.Id
-                                select
-                                new BillDetailsViewModel
-                                {
-                                    ID = p.ID,
-                                    ProductID = p.ProductID,
-                                    BillID = p.BillID,
-                                    Name = c.Name,
-                                    Price = p.Price,
-                                    Amount = p.Amount,
-                                    Status = c.Status,
-                                };
-            return billDetailsVM.ToList();
+            var joinedData = from product in products
+                             join sale in sales on product.SaleID equals sale.Id
+                             join bill in billDetails on product.Id equals bill.ProductID
+                             select  new BillDetailsViewModel
+                             {
+                                      ID = bill.ID,
+                                    ProductID = bill.ProductID,
+                                    BillID = bill.BillID,
+                                    Name = product.Name,
+                                    //Price = bill.Price,
+                                    Amount = bill.Amount,
+                                    Status =product.Status,
+                                   SalePrice = Convert.ToInt64(product.Price - product.Price * (sale.Percent / 100))
+
+
+                             };
+            return joinedData.ToList();
+
+
+
+            //List<BillDetails> billDetails = _context.BillDetails.Where(p => p.BillID == id).ToList();
+            //List<Product> product = _context.Products.ToList();
+            //var billDetailsVM = from p in billDetails
+            //                    join c in product
+            //                    on p.ProductID equals c.Id
+            //                    select
+            //                    new BillDetailsViewModel
+            //                    {
+            //                        ID = p.ID,
+            //                        ProductID = p.ProductID,
+            //                        BillID = p.BillID,
+            //                        Name = c.Name,
+            //                        Price = p.Price,
+            //                        Amount = p.Amount,
+            //                        Status = c.Status,
+            //                    };
+            //return billDetailsVM.ToList();
         }
+
+      
+
     }
+        
 
     public class BillDetailsViewModel
     {
@@ -102,7 +129,9 @@ namespace DAL_BUS.BUS
         public long Price { get; set; }
         public int Amount { get; set; } //số lượng
         public int Status { get; set; }
+        public long SalePrice { get; set; }
 
-     
     }
+
+    
 }
