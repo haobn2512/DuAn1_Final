@@ -45,7 +45,6 @@
             voucherToolStripMenuItem = new ToolStripMenuItem();
             btn_ThongKe = new ToolStripMenuItem();
             btn_ThongKeSp = new ToolStripMenuItem();
-            btn_ThongKeDt = new ToolStripMenuItem();
             hướngDẫnToolStripMenuItem = new ToolStripMenuItem();
             btn_Hdsd = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
@@ -75,7 +74,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { hệThốngToolStripMenuItem, danhMụcToolStripMenuItem, btn_ThongKe, hướngDẫnToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(2640, 40);
+            menuStrip1.Size = new Size(2640, 42);
             menuStrip1.TabIndex = 16;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -83,7 +82,7 @@
             // 
             hệThốngToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { btn_DangNhap, btn_DangXuat, btn_HoSoNv, btn_Thoat });
             hệThốngToolStripMenuItem.Name = "hệThốngToolStripMenuItem";
-            hệThốngToolStripMenuItem.Size = new Size(140, 36);
+            hệThốngToolStripMenuItem.Size = new Size(140, 38);
             hệThốngToolStripMenuItem.Text = "Hệ Thống";
             // 
             // btn_DangNhap
@@ -122,7 +121,7 @@
             danhMụcToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { btn_qlsp, btn_qlnv, btn_Sale, toolStripMenuItem1, kháchHàngToolStripMenuItem, voucherToolStripMenuItem });
             danhMụcToolStripMenuItem.Name = "danhMụcToolStripMenuItem";
             danhMụcToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.B;
-            danhMụcToolStripMenuItem.Size = new Size(145, 36);
+            danhMụcToolStripMenuItem.Size = new Size(145, 38);
             danhMụcToolStripMenuItem.Text = "Danh Mục";
             // 
             // btn_qlsp
@@ -174,31 +173,25 @@
             // 
             // btn_ThongKe
             // 
-            btn_ThongKe.DropDownItems.AddRange(new ToolStripItem[] { btn_ThongKeSp, btn_ThongKeDt });
+            btn_ThongKe.DropDownItems.AddRange(new ToolStripItem[] { btn_ThongKeSp });
             btn_ThongKe.Name = "btn_ThongKe";
             btn_ThongKe.ShortcutKeys = Keys.Alt | Keys.P;
-            btn_ThongKe.Size = new Size(137, 36);
+            btn_ThongKe.Size = new Size(137, 38);
             btn_ThongKe.Text = "Thống Kê";
             // 
             // btn_ThongKeSp
             // 
             btn_ThongKeSp.Name = "btn_ThongKeSp";
             btn_ThongKeSp.ShortcutKeys = Keys.Alt | Keys.P;
-            btn_ThongKeSp.Size = new Size(448, 44);
-            btn_ThongKeSp.Text = "Thống Kê Sản Phẩm";
-            // 
-            // btn_ThongKeDt
-            // 
-            btn_ThongKeDt.Name = "btn_ThongKeDt";
-            btn_ThongKeDt.ShortcutKeys = Keys.Alt | Keys.T;
-            btn_ThongKeDt.Size = new Size(448, 44);
-            btn_ThongKeDt.Text = "Thống Kê Doanh Thu";
+            btn_ThongKeSp.Size = new Size(593, 44);
+            btn_ThongKeSp.Text = "Thống Kê Sản Phẩm Và Doanh Thu";
+            btn_ThongKeSp.Click += btn_ThongKeSp_Click;
             // 
             // hướngDẫnToolStripMenuItem
             // 
             hướngDẫnToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { btn_Hdsd });
             hướngDẫnToolStripMenuItem.Name = "hướngDẫnToolStripMenuItem";
-            hướngDẫnToolStripMenuItem.Size = new Size(157, 36);
+            hướngDẫnToolStripMenuItem.Size = new Size(157, 38);
             hướngDẫnToolStripMenuItem.Text = "Hướng Dẫn";
             // 
             // btn_Hdsd
@@ -243,7 +236,6 @@
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem btn_ThongKe;
         private ToolStripMenuItem btn_ThongKeSp;
-        private ToolStripMenuItem btn_ThongKeDt;
         private ToolStripMenuItem hướngDẫnToolStripMenuItem;
         private ToolStripMenuItem btn_Hdsd;
         private ToolStripMenuItem kháchHàngToolStripMenuItem;

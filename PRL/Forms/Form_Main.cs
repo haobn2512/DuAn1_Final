@@ -142,5 +142,16 @@ namespace PRL.Forms
             form_Cus.FormBorderStyle = FormBorderStyle.None;
             form_Cus.Show();
         }
+
+        private void btn_ThongKeSp_Click(object sender, EventArgs e)
+        {
+            pn_MainProgram.Controls.Clear();
+            Form_ThongKe form_tk = new Form_ThongKe();
+            form_tk.TopLevel = false;
+            pn_MainProgram.Controls.Add(form_tk);
+            form_tk.FormBorderStyle = FormBorderStyle.None;
+            form_tk.Show();
+
+        }
     }
 }
