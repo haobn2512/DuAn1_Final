@@ -55,6 +55,7 @@
             lb_TienThua = new Label();
             lbCreate = new Label();
             lb_Accountid = new Label();
+            cbb_hd = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dgv_HD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_HDCT).BeginInit();
             SuspendLayout();
@@ -303,11 +304,22 @@
             lb_Accountid.TabIndex = 28;
             lb_Accountid.Text = "Account ID";
             // 
+            // cbb_hd
+            // 
+            cbb_hd.FormattingEnabled = true;
+            cbb_hd.Items.AddRange(new object[] { "Chưa thanh toán", "Đã thanh toán", "Tất cả" });
+            cbb_hd.Location = new Point(1521, 775);
+            cbb_hd.Name = "cbb_hd";
+            cbb_hd.Size = new Size(307, 40);
+            cbb_hd.TabIndex = 29;
+            cbb_hd.SelectedIndexChanged += cbb_hd_SelectedIndexChanged;
+            // 
             // Form_BanHang
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2318, 1253);
+            Controls.Add(cbb_hd);
             Controls.Add(lb_Accountid);
             Controls.Add(lbCreate);
             Controls.Add(dgv_HD);
@@ -370,5 +382,6 @@
         private Label lb_TienThua;
         private Label lbCreate;
         private Label lb_Accountid;
+        private ComboBox cbb_hd;
     }
 }

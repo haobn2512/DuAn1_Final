@@ -31,8 +31,6 @@
             button1 = new Button();
             btn_TimKiem = new Button();
             txt_search = new TextBox();
-            btn_mokhoa = new Button();
-            btn_khoa = new Button();
             btn_sua = new Button();
             btn_Them = new Button();
             label3 = new Label();
@@ -47,12 +45,13 @@
             // 
             // button1
             // 
-            button1.Location = new Point(1051, 435);
+            button1.Location = new Point(646, 408);
             button1.Name = "button1";
-            button1.Size = new Size(150, 46);
+            button1.Size = new Size(150, 80);
             button1.TabIndex = 38;
             button1.Text = "Clear";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // btn_TimKiem
             // 
@@ -70,26 +69,6 @@
             txt_search.Size = new Size(435, 39);
             txt_search.TabIndex = 36;
             // 
-            // btn_mokhoa
-            // 
-            btn_mokhoa.BackgroundImageLayout = ImageLayout.Stretch;
-            btn_mokhoa.Location = new Point(783, 408);
-            btn_mokhoa.Name = "btn_mokhoa";
-            btn_mokhoa.Size = new Size(177, 80);
-            btn_mokhoa.TabIndex = 35;
-            btn_mokhoa.Text = "UnLock";
-            btn_mokhoa.UseVisualStyleBackColor = true;
-            // 
-            // btn_khoa
-            // 
-            btn_khoa.BackgroundImageLayout = ImageLayout.Stretch;
-            btn_khoa.Location = new Point(593, 408);
-            btn_khoa.Name = "btn_khoa";
-            btn_khoa.Size = new Size(124, 80);
-            btn_khoa.TabIndex = 34;
-            btn_khoa.Text = "Lock";
-            btn_khoa.UseVisualStyleBackColor = true;
-            // 
             // btn_sua
             // 
             btn_sua.BackgroundImageLayout = ImageLayout.Stretch;
@@ -99,6 +78,7 @@
             btn_sua.TabIndex = 33;
             btn_sua.Text = "Update";
             btn_sua.UseVisualStyleBackColor = true;
+            btn_sua.Click += btn_sua_Click;
             // 
             // btn_Them
             // 
@@ -168,6 +148,7 @@
             dtg_Data.RowTemplate.Height = 41;
             dtg_Data.Size = new Size(1999, 531);
             dtg_Data.TabIndex = 25;
+            dtg_Data.CellClick += dtg_Data_CellClick;
             // 
             // txt_Point
             // 
@@ -185,8 +166,6 @@
             Controls.Add(button1);
             Controls.Add(btn_TimKiem);
             Controls.Add(txt_search);
-            Controls.Add(btn_mokhoa);
-            Controls.Add(btn_khoa);
             Controls.Add(btn_sua);
             Controls.Add(btn_Them);
             Controls.Add(label3);
@@ -208,8 +187,6 @@
         private Button button1;
         private Button btn_TimKiem;
         private TextBox txt_search;
-        private Button btn_mokhoa;
-        private Button btn_khoa;
         private Button btn_sua;
         private Button btn_Them;
         private Label label3;

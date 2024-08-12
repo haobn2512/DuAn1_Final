@@ -21,6 +21,7 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Kernel.Font;
 using System.Drawing.Printing;
+using System.Windows.Forms.VisualStyles;
 
 namespace PRL.Forms
 {
@@ -371,15 +372,63 @@ namespace PRL.Forms
 
         private void txt_Phone_TextChanged(object sender, EventArgs e)
         {
-            cbb_Phone.Items.Clear();
-            _customerServices = new CustomerServives();
-            string searchPhone = txt_Phone.Text;
-            _customers = _customerServices.GetByPhone(searchPhone); // tìm kiếm và hiện ra khi cần
-            foreach (var item in _customers)
+            string phoneNumber = txt_Phone.Text.Trim();
+
+            // Kiểm tra số điện thoại trong CSDL
+            if (!IsPhoneNumberExists(phoneNumber))
             {
-                cbb_Phone.Items.Add(item.Name);
+                // Nếu số điện thoại không tồn tại, ẩn tên khách hàng trong combobox
+                cbb_Phone.Visible = false;
+
+                // Cho phép nhập tên khách hàng
+                txtName.Visible = true;
+                //string phoneNumber = txt_Phone.Text.Trim();
+                string customerName = txtName.Text.Trim();
+
+                if (!string.IsNullOrEmpty(phoneNumber) && !string.IsNullOrEmpty(customerName))
+                {
+                    using (var context = new AppDbContext())
+                    {
+                        var customer = new Customer
+                        {
+                            PhoneNumber = phoneNumber,
+                            Name = customerName,
+                            Point = 0
+                        };
+
+                        context.Customers.Add(customer);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            else
+            {
+                // Nếu số điện thoại đã tồn tại, hiển thị tên khách hàng
+                cbb_Phone.Visible = true;
+
+
+                // Cập nhật tên khách hàng từ combobox nếu có
+                cbb_Phone.Items.Clear();
+                _customerServices = new CustomerServives();
+                _customers = _customerServices.GetByPhone(phoneNumber); // tìm kiếm và hiện ra khi cần
+                foreach (var item in _customers)
+                {
+                    cbb_Phone.Items.Add(item.Name);
+                }
             }
         }
+
+        private bool IsPhoneNumberExists(string phoneNumber)
+        {
+            // Giả sử bạn có một phương thức truy vấn CSDL
+            // Trả về true nếu số điện thoại tồn tại, ngược lại false
+            using (var context = new AppDbContext())
+            {
+                return context.Customers.Any(c => c.PhoneNumber == phoneNumber);
+            }
+        }
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -463,7 +512,8 @@ namespace PRL.Forms
         }
 
         private void btn_ThanhToan_Click(object sender, EventArgs e)
-        {   bool isPaid = false;
+        {
+            bool isPaid = false;
             if (!isPaid)
             {
                 long tongTien;
@@ -590,7 +640,7 @@ namespace PRL.Forms
             }
         }
 
-       
+
 
 
         public void Clear()
@@ -608,6 +658,27 @@ namespace PRL.Forms
         private void dgv_HDCT_CellClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void cbb_hd_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int status = cbb_hd.SelectedIndex; // Giả sử bạn có combobox với các giá trị tương ứng
+            SearchInvoices(status);
+            dgv_HDCT.DataSource = null;
+        }
+
+        private void SearchInvoices(int status)
+        {
+            using (var context = new AppDbContext())
+            {
+                // Lấy danh sách hóa đơn dựa trên trạng thái
+                var invoices = context.Bills
+                    .Where(invoice => invoice.Status == status)
+                    .ToList();
+
+                // Hiển thị danh sách hóa đơn (giả sử bạn có một DataGridView để hiển thị)
+                dgv_HD.DataSource = invoices;
+            }
         }
     }
 }

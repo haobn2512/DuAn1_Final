@@ -22,8 +22,8 @@ namespace DAL_BUS.BUS
         }
         public List<Customer> GetByPhone(string phoneNumber)
         {
-            var check = _context.Customers.Where(p => p.PhoneNumber.Contains(phoneNumber)).ToList();
-            return _context.Customers.Where(p => p.PhoneNumber.Contains(phoneNumber)).ToList();
+            var check = _context.Customers.Where(p => p.PhoneNumber.Equals(phoneNumber)).ToList();
+            return _context.Customers.Where(p => p.PhoneNumber.Equals(phoneNumber)).ToList();
         } // Danh sách chứa để add Vào combobox khi muốn tìm kiếm
         // Tạo mới
         public void Create(string phoneNumber, string name, int point = 0)
