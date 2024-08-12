@@ -53,7 +53,8 @@
             label7 = new Label();
             txt_khachdua = new TextBox();
             lb_TienThua = new Label();
-            btn_Inhd = new Button();
+            lbCreate = new Label();
+            lb_Accountid = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_HD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_HDCT).BeginInit();
             SuspendLayout();
@@ -134,6 +135,7 @@
             dgv_HDCT.RowTemplate.Height = 41;
             dgv_HDCT.Size = new Size(1193, 415);
             dgv_HDCT.TabIndex = 6;
+            dgv_HDCT.CellClick += dgv_HDCT_CellClick;
             // 
             // label2
             // 
@@ -142,39 +144,39 @@
             label2.Name = "label2";
             label2.Size = new Size(89, 32);
             label2.TabIndex = 7;
-            label2.Text = "Mã HĐ";
+            label2.Text = "Ma HĐ";
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Location = new Point(1140, 67);
             label3.Name = "label3";
-            label3.Size = new Size(188, 32);
+            label3.Size = new Size(95, 32);
             label3.TabIndex = 8;
-            label3.Text = "SĐT khách hàng";
+            label3.Text = "SĐT KH";
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Location = new Point(1134, 124);
             label4.Name = "label4";
-            label4.Size = new Size(183, 32);
+            label4.Size = new Size(90, 32);
             label4.TabIndex = 9;
-            label4.Text = "Tên khách hàng";
+            label4.Text = "Ten KH";
             // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Location = new Point(1147, 230);
             label6.Name = "label6";
-            label6.Size = new Size(117, 32);
+            label6.Size = new Size(120, 32);
             label6.TabIndex = 11;
-            label6.Text = "Tổng tiền";
+            label6.Text = "Tong Tien";
             // 
             // lb_MaHD
             // 
             lb_MaHD.AutoSize = true;
-            lb_MaHD.Location = new Point(1430, 16);
+            lb_MaHD.Location = new Point(1349, 16);
             lb_MaHD.Name = "lb_MaHD";
             lb_MaHD.Size = new Size(61, 32);
             lb_MaHD.TabIndex = 12;
@@ -254,9 +256,9 @@
             label5.AutoSize = true;
             label5.Location = new Point(1140, 179);
             label5.Name = "label5";
-            label5.Size = new Size(177, 32);
+            label5.Size = new Size(182, 32);
             label5.TabIndex = 22;
-            label5.Text = "Tiền khách đưa";
+            label5.Text = "Tien Khach Dua";
             // 
             // label7
             // 
@@ -265,7 +267,7 @@
             label7.Name = "label7";
             label7.Size = new Size(115, 32);
             label7.TabIndex = 23;
-            label7.Text = "Tiền thừa";
+            label7.Text = "Tien thua";
             // 
             // txt_khachdua
             // 
@@ -283,22 +285,31 @@
             lb_TienThua.TabIndex = 25;
             lb_TienThua.Text = "yyy";
             // 
-            // btn_Inhd
+            // lbCreate
             // 
-            btn_Inhd.Location = new Point(1894, 209);
-            btn_Inhd.Name = "btn_Inhd";
-            btn_Inhd.Size = new Size(150, 46);
-            btn_Inhd.TabIndex = 26;
-            btn_Inhd.Text = "In hóa đơn";
-            btn_Inhd.UseVisualStyleBackColor = true;
-            btn_Inhd.Click += btn_Inhd_Click;
+            lbCreate.AutoSize = true;
+            lbCreate.Location = new Point(1895, 124);
+            lbCreate.Name = "lbCreate";
+            lbCreate.Size = new Size(140, 32);
+            lbCreate.TabIndex = 27;
+            lbCreate.Text = "Create Date";
+            // 
+            // lb_Accountid
+            // 
+            lb_Accountid.AutoSize = true;
+            lb_Accountid.Location = new Point(1895, 179);
+            lb_Accountid.Name = "lb_Accountid";
+            lb_Accountid.Size = new Size(131, 32);
+            lb_Accountid.TabIndex = 28;
+            lb_Accountid.Text = "Account ID";
             // 
             // Form_BanHang
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2318, 1253);
-            Controls.Add(btn_Inhd);
+            Controls.Add(lb_Accountid);
+            Controls.Add(lbCreate);
             Controls.Add(dgv_HD);
             Controls.Add(lb_TienThua);
             Controls.Add(txt_khachdua);
@@ -357,6 +368,7 @@
         private Label label7;
         private TextBox txt_khachdua;
         private Label lb_TienThua;
-        private Button btn_Inhd;
+        private Label lbCreate;
+        private Label lb_Accountid;
     }
 }

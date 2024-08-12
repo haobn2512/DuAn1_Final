@@ -191,6 +191,7 @@ namespace PRL.Forms
                 cbb_Phone.Items.Add(item.Name);
             }
             timer1.Start();
+            btn_ThanhToan.Enabled = false;
 
 
         }
@@ -375,6 +376,7 @@ namespace PRL.Forms
             _billServices = new BillServices();
             _billServices.Create(accountId, cbb_Phone.Text);
             LoadBill();
+            btn_ThanhToan.Enabled = true;
         }
         public void LoadBill()
         {
@@ -410,12 +412,12 @@ namespace PRL.Forms
                     // Cập nhật các điều khiển
                     lb_MaHD.Text = row.Cells[0].Value?.ToString() ?? string.Empty;
                     txtName.Text = row.Cells[1].Value?.ToString() ?? string.Empty;
+                    lb_Accountid.Text = row.Cells[2].Value?.ToString() ?? string.Empty;
                     lb_TongTien.Text = row.Cells[3].Value?.ToString() ?? string.Empty;
+                    lbCreate.Text = row.Cells[4].Value?.ToString() ?? string.Empty;
 
 
-                    // Chuyển đổi giá trị cho ComboBox
-                    // cbb_Phone.SelectedIndex = Convert.ToInt32(row.Cells[7].Value);
-                    //cbb_Sale.SelectedIndex = Convert.ToInt32(row.Cells[8].Value);
+
                 }
             }
             catch (FormatException ex)
@@ -430,48 +432,96 @@ namespace PRL.Forms
         }
 
         private void btn_ThanhToan_Click(object sender, EventArgs e)
-        {
-            //Guid billId = Guid.Parse(lb_MaHD.Text);
-            //if (billId != null)
-            //{
-            //    _billServices.UpdateBill(billId, 1, null);
-            //    MessageBox.Show("Thanh toán thành công");
-            //    LoadBill();
-            //}
-
-            long tongTien;
-            long khachDua;
-
-            // Giả sử bạn đã lấy tổng tiền từ một Label
-            if (!long.TryParse(lb_TongTien.Text, out tongTien))
+        {   bool isPaid = false;
+            if (!isPaid)
             {
-                MessageBox.Show("Giá trị tổng tiền không hợp lệ.");
-                return;
-            }
+                long tongTien;
+                long khachDua;
 
-            // Lấy giá trị tiền khách đưa từ TextBox
-            if (!long.TryParse(txt_khachdua.Text, out khachDua))
-            {
-                MessageBox.Show("Giá trị khách đưa không hợp lệ.");
-                return;
-            }
+                // Giả sử bạn đã lấy tổng tiền từ một Label
+                if (!long.TryParse(lb_TongTien.Text, out tongTien))
+                {
+                    MessageBox.Show("Giá trị tổng tiền không hợp lệ.");
+                    return;
+                }
 
-            // Tính toán tiền thừa
-            decimal tienThua = khachDua - tongTien;
+                // Lấy giá trị tiền khách đưa từ TextBox
+                if (!long.TryParse(txt_khachdua.Text, out khachDua))
+                {
+                    MessageBox.Show("Giá trị khách đưa không hợp lệ.");
+                    return;
+                }
 
-            // Kiểm tra nếu tiền thừa âm
-            if (tienThua < 0)
-            {
-                MessageBox.Show("Tiền khách đưa không đủ.");
+                // Tính toán tiền thừa
+                decimal tienThua = khachDua - tongTien;
+
+                // Kiểm tra nếu tiền thừa âm
+                if (tienThua < 0)
+                {
+                    MessageBox.Show("Tiền khách đưa không đủ.");
+                }
+                else
+                {
+                    // Hiển thị tiền thừa
+                    lb_TienThua.Text = tienThua.ToString();
+                }
+                Guid billId = Guid.Parse(lb_MaHD.Text);
+                MessageBox.Show("Thanh toán thành công");
+                DialogResult result = MessageBox.Show("In hóa đơn", "Thông báo", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    string customerName = txtName.Text.Replace(" ", "_"); // Thay thế khoảng trắng bằng dấu _
+                    string filePath = $@"E:\hoadon_{customerName}_{lb_MaHD.Text}.pdf";
+
+                    // Tạo tài liệu PDF
+                    using (PdfWriter writer = new PdfWriter(filePath))
+                    {
+                        using (PdfDocument pdf = new PdfDocument(writer))
+                        {
+                            Document document = new Document(pdf);
+
+                            // Thêm tiêu đề
+                            document.Add(new Paragraph("HOA Don").SetFontSize(20).SetBold());
+
+                            // Thêm thông tin hóa đơn
+                            document.Add(new Paragraph($"Ma HD: {lb_MaHD.Text}"));
+                            document.Add(new Paragraph($"Ten KH: {txtName.Text}"));
+                            document.Add(new Paragraph($"SDT: {txt_Phone.Text}"));
+                            document.Add(new Paragraph($"Tien khach dua: {txt_khachdua.Text}"));
+                            document.Add(new Paragraph($"Tong tien: {lb_TongTien.Text}"));
+                            document.Add(new Paragraph($"Tien thua: {txt_khachdua.Text}"));
+                            document.Add(new Paragraph($"NgayTao: {lbCreate.Text}"));
+                            document.Add(new Paragraph($"Nhan vien: {lb_Accountid.Text}"));
+                            // Đóng tài liệu
+                            document.Close();
+                        }
+                    }
+
+                    // Thông báo cho người dùng
+                    MessageBox.Show("Hóa đơn đã được lưu thành file PDF tại " + filePath);
+                    _billServices.UpdateBill(billId, 1, null);
+                    LoadBill();
+                    Clear();
+                    dgv_HDCT.DataSource = null;
+
+                }
+                else
+                {
+                    _billServices.UpdateBill(billId, 1, null);
+                    LoadBill();
+                    Clear();
+                    dgv_HDCT.DataSource = null;
+
+                }
+                btn_ThanhToan.Enabled = false;
+
             }
             else
             {
-                // Hiển thị tiền thừa
-                lb_TienThua.Text = tienThua.ToString();
+                MessageBox.Show("Bạn đã thanh toán rồi.");
             }
-            Guid billId = Guid.Parse(lb_MaHD.Text);
-            _billServices.UpdateBill(billId, 1, null);
-            MessageBox.Show("Thanh toán thành công");
+
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -508,36 +558,24 @@ namespace PRL.Forms
             }
         }
 
-        private void btn_Inhd_Click(object sender, EventArgs e)
+       
+
+
+        public void Clear()
         {
-           string customerName = txtName.Text.Replace(" ", "_"); // Thay thế khoảng trắng bằng dấu _
-            string filePath = $@"E:\hoadon_{customerName}_{lb_MaHD.Text}.pdf";
-
-            // Tạo tài liệu PDF
-            using (PdfWriter writer = new PdfWriter(filePath))
-            {
-                using (PdfDocument pdf = new PdfDocument(writer))
-                {
-                    Document document = new Document(pdf);
-
-                    // Thêm tiêu đề
-                    document.Add(new Paragraph("HÓA ĐƠN").SetFontSize(20).SetBold());
-
-                    // Thêm thông tin hóa đơn
-                    document.Add(new Paragraph($"Mã HD: {lb_MaHD.Text}"));
-                    document.Add(new Paragraph($"Tên KH: {txt_khachdua.Text}"));
-                   // document.Add(new Paragraph($"SDT: {txt_Phone.Text}"));
-                    document.Add(new Paragraph($"Tiền khách đưa: {txt_khachdua.Text}"));
-                    document.Add(new Paragraph($"Tổng tiền: {lb_TongTien.Text}"));
-                    document.Add(new Paragraph($"Tiền thừa: {txt_khachdua.Text}"));
-                    // Đóng tài liệu
-                    document.Close();
-                }
-            }
-
-            // Thông báo cho người dùng
-            MessageBox.Show("Hóa đơn đã được lưu thành file PDF tại " + filePath);
+            lb_MaHD.Text = "";
+            txt_Phone.Text = "";
+            txtName.Text = "";
+            txt_khachdua.Text = "";
+            lb_TongTien.Text = "";
+            lb_TienThua.Text = "";
+            lbCreate.Text = "";
+            lb_Accountid.Text = "";
+            cbb_Phone.SelectedIndex = -1;
         }
-        
+        private void dgv_HDCT_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
